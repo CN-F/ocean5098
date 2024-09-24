@@ -17,7 +17,7 @@ xfun::embed_file('environment.R')
 
 
 ```{r echo=FALSE, purl=F}
-xfun::embed_file('C://R_Ocean5098//R_Ocean5098//R_Ocean5098//01-read_excel//reef_fish.xlsx')
+xfun::embed_file('01-Read_excel//reef_fish.xlsx')
 ```
 
 ```{r echo=FALSE}

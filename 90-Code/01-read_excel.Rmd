@@ -1,0 +1,27 @@
+---
+title: "Translate xlsx file to txt file and csv file"
+author: "QY"
+date: "2024-09-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Read xlsx file
+```{r }
+library(readxl)
+dir_path<- "C://ocean5098//01-Read_excel//"
+xlsx_path<- paste0(dir_path, "reef_fish.xlsx")
+reef_fish<- read_excel(xlsx_path)
+reef_fish
+```
+
+# Save as txt file and csv file
+```{r }
+table_path<- paste0(dir_path, "reef_fish.txt")
+csv_path<- paste0(dir_path, "reef_fish.csv")
+write.table(reef_fish,table_path)
+write.csv(reef_fish,csv_path)
+```

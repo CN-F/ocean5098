@@ -1,0 +1,11 @@
+"country" "richness"
+"1" "Indonesia" 1820
+"2" "Australia" 1627
+"3" "Philippines" 1525
+"4" "Papua_New_Guniea" 1494
+"5" "Republic_of_Belau" 1254
+"6" "Japan" 1315
+"7" "Taiwan" 1172
+"8" "New_Caledonia" 1007
+"9" "Fiji" 919
+"10" "Federated_States_of Micronesia" 900
