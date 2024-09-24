@@ -1,3 +1,3 @@
 # ocean5098
 
-For practicing Github
+For practicing Github in Rstudio
