@@ -1,0 +1,46 @@
+---
+title: "Iris"
+author: "QY"
+date: "2024-09-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Practice 2.1
+## Iris dataset
+```{r }
+data("iris")
+iris
+```
+
+
+## Three species of iris
+```{r}
+print(iris$Species)
+print(unique(iris$Species))
+```
+## Find each species and save in different variable
+```{r}
+print(iris$Species == "setosa")      # setosa data
+setosa_df<- iris[iris$Species == "setosa",]
+```
+
+```{r}
+print(iris$Species =="versicolor")   # versicolor data
+versicolor_df<- iris[iris$Species =="versicolor",]
+```
+
+```{r}
+print(iris$Species == "virginica")   # virginica data
+virginica_df<- iris[iris$Species == "virginica",]
+```
+
+## Three species' data sets
+```{r}
+setosa_df
+versicolor_df
+virginica_df
+```
