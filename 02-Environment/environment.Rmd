@@ -17,7 +17,7 @@ xfun::embed_file('environment.R')
 
 
 ```{r echo=FALSE, purl=F}
-xfun::embed_file('01-Read_excel//reef_fish.xlsx')
+xfun::embed_file('C://ocean5098//01-Read_excel//reef_fish.xlsx')
 ```
 
 ```{r echo=FALSE}
@@ -239,8 +239,8 @@ My file `reef_fish` is an .xlsx file located in the file 'Data' of my working di
 # 2. reading my `reef_fish.xlsx` in my working directory
 # 3. importing `reef_fish.xlsx` in a `fish` object
 library(readxl) # load the package `readxl'
-read_excel('C://R_Ocean5098//R_Ocean5098//R_Ocean5098//01-read_excel//reef_fish.xlsx') # automatically print on my screen
-fish<-read_excel('C://R_Ocean5098//R_Ocean5098//R_Ocean5098//01-read_excel//reef_fish.xlsx') # store my table in an object called `fish`
+read_excel('C://ocean5098//01-read_excel//reef_fish.xlsx') # automatically print on my screen
+fish<-read_excel('C://ocean5098//01-read_excel//reef_fish.xlsx') # store my table in an object called `fish`
 fish # print my object `fish`   
 ```
 
@@ -253,7 +253,7 @@ More commonly, we will use .txt file (lighter) and the function `read.table'. Bu
 
 ```{r,  eval=T}
 # importing a .txt file
-fish<-read.table('C://R_Ocean5098//R_Ocean5098//R_Ocean5098//01-read_excel//reef_fish.txt', header=T, sep='\t', dec='.') 
+fish<-read.table('C://ocean5098//01-read_excel//reef_fish.txt', header=T, sep='\t', dec='.') 
 ```
 
 Check `?read.table` for all arguments you can specify within this function
@@ -262,8 +262,8 @@ It is not a good practice, but instead or working within  a working directory, y
 
 ```{r,  eval=FALSE,  tidy=TRUE}
 # import file by path name
-fish<-read.table ("D:/.../data/reef_fish.txt",header = TRUE,sep="\t", dec=".")# long version
-fish<-read.table("D:/.../data/reef_fish.txt", TRUE, "\t",".")# short version
+fish<-read.table ("C://ocean5098//01-Read_excel//reef_fish.txt",header = TRUE,sep="\t", dec=".")# long version
+fish<-read.table("C://ocean5098//01-Read_excel//reef_fish.txt", TRUE, "\t",".")# short version
 ```
 
 You can also use `file.choose()' to locate directly the file on computer
@@ -339,7 +339,7 @@ Again using our `fish` data set, we can write a script to import the data set as
 
 ```{r,  eval=T}
 # import data set and create an object in R studio + simple plot 
-fish<-read.table('C://R_Ocean5098//R_Ocean5098//R_Ocean5098//01-read_excel//reef_fish.txt', header=T, sep='\t', dec='.')
+fish<-read.table('C://ocean5098//01-read_excel//reef_fish.txt', header=T, sep=' ', dec='.')
 barplot(fish$richness, main="Top 10 reef fish Richness (Allen, 2000)", horiz=TRUE, names.arg=fish$country, cex.names=0.5, las=1)
 ```
 
