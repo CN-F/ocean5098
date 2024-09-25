@@ -1,0 +1,288 @@
+---
+title: "Basics"
+---
+
+```{r eval = TRUE,  message=F, include=F, warning=F, purl=F, results="hide"}
+knitr::purl('basics.Rmd', documentation = F)
+```
+
+```{r echo=FALSE, purl=F}
+xfun::embed_file('basics.Rmd')
+```
+
+```{r echo=FALSE, purl=F}
+xfun::embed_file('basics.R')
+```
+
+```{r echo=FALSE}
+xaringanExtra::use_clipboard()
+```
+
+-----------------------
+
+When a data set is manipulated, the data is changed so that it is easier to read and/or the entire data set is made clearer for subsequent analyzes. In general, data is manipulated before it is visualized and/or analyzed. The term "data manipulation" is often used in conjunction with the term "data exploration", which involves organizing data with an available set of variables. Machine data collection is sometimes fraught with errors and inaccuracies. Data manipulation is also used to eliminate these inaccuracies and make the data more accurate and precise.
+
+# Dataset
+
+The `datasets` package provides datasets. It is part of the basic installation of R and you do not need to install the package (if you accept the default option when installing R). These datasets are used in many examples by the help in R. Among these datasets, `iris` (`?iris`) provides measurements of the variables sepal length and width or petal length and width for 50 flowers of each of three iris species. The `Species` is a categorical variable with three levels: *setosa*, *versicolor*, and *virginica*. The flower dimensions are quantitative and continuous variables expressed in centimeters.
+
+```{r, echo=FALSE, fig.align='center', fig.cap="Iris species data collection", out.width = '100%'}
+knitr::include_graphics("illustrations/iris.png")
+```
+
+
+```{r,  eval=T}
+rm(list=ls()) # clean memory
+library (datasets) # load package
+data(iris) # import dataset
+head (iris) # visualize 'head' dataset
+# 'data' automatically  creates the object 'iris'
+```
+
+Summarize this dataset: 
+
+```{r,  eval=T}
+summary(iris) #  object summary
+```
+
+You can examine the `class` (type) of the object you are manipulating. Examining its structure `str` is important to understand the variables you are dealing with.
+
+```{r,  eval=T}
+str(iris) # examine the structure of the object
+```
+
+The object `iris` is a `data.frame` and consists of 5 variables (`Sepal.Length`, `Sepal.Width`, `Petal.Length`, `Petal.Width`) and 150 observations. Four variables are numerical, one is a factor with 3 levels (`Species`). There are also other object types and structures (integer, matrix, etc.), but more on that later (this is a boring section of this course).
+
+
+
+
+
+
+Summarizing your dataset and examining its structure will allow you to identify possible errors in your dataset (including format errors that may have occurred when importing the dataset, remember `reef_fish.txt` dataset). You can fix format errors with `read.table` or others similar functions. Alternatively, you can `fix` it in a spreadsheet.
+
+```{r,  eval=FALSE}
+fix(iris) # spreadsheet
+```
+
+# Selection
+
+## Column and row
+
+Suppose there is an online dataset that documents the height and shoe size of 10 students in Taiwan (we could create our own dataset, but we want to import one from the previous year that is available online):
+
+
+```{r,  eval=F}
+students<-read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/students.txt',header=T, sep="\t", dec='.') # read data set from url
+str(students) 
+```
+
+```{r,  eval=T, echo=F}
+students<-read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/students.txt',header=T, sep="\t", dec='.') # read data set from url
+str(students) 
+```
+
+
+`r knitr::asis_output("\U1F449")` *Comment on the structure of this dataset*
+
+A single column (height) is required for further processing. This is achieved with the operator `$` . A column can be selected by putting together on the same line:
+
+- the name of the object `students`
+- the operator `$`
+- the name of the column, either `height`, `shoesize`, `gender`, `population`
+
+To select the column `height` here, we can simply use `students$height`. Note that the same column can be extracted using **subscript** which is indicated in **square brackets** after the object name, e.g. `object [no. row, no. column]`. So to select the first column of our object `students`, you can also use: `students[,1]`
+
+```{r,  eval=T}
+# students[,1]
+students$height
+```
+
+A line (row) can only be extracted with a subscript . So to extract the first line of the data frame:
+
+```{r,  eval=T}
+students[1,]
+```
+
+Now that you know how to select columns and rows, you will understand the following piece (chunk) of code:
+
+```{r,  eval=FALSE}
+students[1,1] # element in the first row, first column
+students$height[1] # first element in our vector height
+```
+
+<span style="color: red"> **Remember:** `object[no. row, no. column]`</span>
+
+## Subset
+
+The purpose of subsetting is to extract information according to a specific condition. For example, we only want to select  `female` students from the dataset`students`. Such a selection can be done by *filtering* `students` based on the information `gender`. Let's examine the logic behind this:
+
+1. Add a condition and check whether the observation (row) applies to female students or not:
+
+```{r,  eval=T}
+students$gender=="female" # condition
+```
+
+2. Let's put this condition into a *filter*. Let's call it `f', since it stands for `female`:
+
+```{r,  eval=T}
+f<-students$gender=="female" # filter
+``` 
+
+3. Apply this *filter* `f` using subscript. We only want to extract/select the **rows** that contain data for `female` students. The resulting data set will be inserted into a new object called `females`:
+
+```{r,  eval=T}
+females<-students[f,] # selection
+females
+```
+
+Our subset consists of a selection of the five female students. The original dataset `students` had ten observations, and I can check this change by calling the dimensions of the new object `females`:`dim(females)`. The new dataset is a `data.frame` with 5 observations and 4 columns. The column names `colnames(females)` remained unchanged, but I now only have 5 names for the rows `rownames(females)`. The rows can be renamed by combining `c` the names of the females into a **vector**.
+
+```{r,  eval=T}
+rownames(females)<-c('Vanessa', 'Vicky', 'Michelle', 'Joyce', 'Victoria')
+females
+``` 
+
+<p class="comment">
+**Practice 2.1** Using the `iris` data set, create three smaller data sets corresponding to the three species designated in the column `Species`. Do not look at the solution before trying.
+</p>
+
+```{r, class.source = "fold-hide",  eval=FALSE}
+# NOT RUN:  levels(iris$Species)
+setf<-iris$Species=="setosa"
+setosa<-iris[setf,]
+verf<-iris$Species=="versicolor"
+versicolor<-iris[verf,] 
+virf<-iris$Species=="virginica"
+virginica<-iris[virf,] 
+```
+
+## Sample
+
+The `sample` function can be used to select one of us (see selection of one student in [Home](./index.html)). In general, the `sample` function is used to generate a sample of a certain size extracted from a vector or a data set; either with or without replacement.
+
+The basic syntax of the `sample` function is as follows:
+
+```{r class.source = "fold-show",  eval=FALSE}
+sample(data, size, replace = FALSE, prob = NULL)
+# check in detail source code 
+# View(sample) OR getAnywhere(sample()) 
+```
+
+*'sample' is a function already compiled, but we could have build our own by combining several steps as we did before for subsetting. You can check in detail what exactly the function does by checking its source code: `View(sample)` OR `getAnywhere(sample())`. This is important if you want to  make a change to an existing function.
+
+Therefore, for a random selection of two individuals in our `females` dataset, the steps are: (1) determining the size of the target vector; (2) creating a filter with randomly selected individuals; (3) applying the filter to the dataset:
+
+
+```{r,  eval=T}
+# NOT RUN nrow(females)
+1:nrow(females) # create a vector from 1 to the number of row in 'females'
+sf<-sample(1:nrow(females), 2) # filter with two randomly selected female students
+sf # the selection
+females[sf,] # apply the filter on our original dataset
+```
+
+# Sorting
+
+Sorting a data frame is done by combining the function `order` with a subscript. Just as with subsetting, we must first create a vector that specifies the order in which the rows of the table must be arranged. Let's `order` the `students` by increasing `height`:
+
+```{r,  eval=FALSE}
+# NOT RUN: check dataset; ind no.1 should move at position no. 5
+ind1<-order (students$height) # create a vector with order
+students [ind1,] # sorting data set with  with filter
+# NOT RUN: ind no.1 moved at position no. 5
+```
+
+Both can be combined in one line to be more concise (and elegant). Yes, we can talk about the beauty of the R script:
+
+```{r,  eval=T}
+students[order(students$height),]
+```
+
+You can now guess what the following vectors will do: 
+
+```{r,  eval=FALSE}
+ind2<-order(-students$height)
+```
+
+It is the equivalent of `ind3<-order(students$height,decreasing =T)`
+
+
+# Recoding
+
+Recoding is the replacement of values with other values. Values in a variable can be recoded using the `ifelse` function. Let us recode the variable `gender` variable in `students` with color names. We replace the information `male` with `blue` and the information `female` with `red`. Note that we use the operator `==` here, which means 'equal to'. Essentially, it is a matter of specifying a certain condition and setting a task if this condition is met and an alternative task if this condition is not met:
+
+- Conditional element selection
+
+```{r,  eval=T}
+# If `condition` then give 'blue'. If not then gives 'red'.
+colors<-ifelse(students$gender=='male', 'blue','red') 
+colors
+```
+
+- Create a new column
+
+```{r,  eval=T}
+students$colors<-ifelse(students$gender=='male','blue','red') # create a new column
+```
+
+- Replace an existing column
+
+```{r,  eval=F}
+students$gender<-ifelse(students$gender=='male', 'blue','red') # replace an existing column
+```
+
+More operators, which can be combined together:
+
+- `==` equal to 
+
+- `>=` equal to or greater than
+
+- `<=` equal to or less than
+
+- `!=` not equal to
+
+- `&` and
+
+- `|` or
+
+Examples:
+
+```{r,  eval=F}
+students$height <= 165 # students shorter or equal to 165 cm
+students$shoesize < 37 # students with shoes size smaller than 37
+students$height <= 165 & students$shoesize < 37 # students equal or shoter than 165 and shoes size smaller than 37
+# NOT RUN: students$dual.cond<-ifelse(students$height<=165 & students$shoesize<37,'blue','red') 
+```
+
+Let's finally put all this in practice. 
+
+<p class="comment">
+**Practice 2.2** Using the `iris` dataset create a new variable with flower colors. Iris setosa is purple.Iris versicolor is blue. Iris virginica is pink. Sort individuals by decreasing `Sepal.Width`. What can you hypothesize on the size of sepal for these three species. Get back the data set for the species having the smallest sepal width. Delete the variable `color` in this subset</span>* 
+</p>
+
+
+```{r, class.source = "fold-hide",  eval=FALSE}
+# Did you make it? Ask for password if you did to confirm your results. Otherwise keep trying! 
+```
+
+<form id="form" onsubmit="return false;">
+  <input type="password" id="userInput" />
+  <input type="submit" onclick="othername();" />
+</form>
+
+<p id="hidden_clue"></p>
+
+
+<script>
+function othername() {
+    var pass1 = 12345;
+    var input = document.getElementById("userInput").value;
+    if (input == pass1) {
+        document.getElementById("hidden_clue").textContent = "iris$color<-ifelse(iris$Species=='setosa','purple', ifelse(iris$Species=='versicolor','blue','pink')); iris[order(iris$Sepal.Width, decreasing = T),]";
+    }
+}
+</script>
+
+`r knitr::asis_output("\U1F449")` *To delete a variable, this variable will received `NULL`. Thus 'iris$color<-NULL' will delete the color column just created*
+
+Those are functions in R 'base' package. See also `?subset`, `?with`, `?within`, etc. Other packages such as `data.table`, `reshape2`, `dplyr`, `tidyr`, etc. offer useful functionality for manipulating data set. Let's talk about the `tidyverse` next week. 

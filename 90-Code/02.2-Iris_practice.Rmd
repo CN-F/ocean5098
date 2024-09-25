@@ -1,0 +1,39 @@
+---
+title: "Practice 2.2"
+author: "R13B42015"
+date: "2024-09-24"
+output: html_document
+---
+
+# Practice 2.2
+### Iris dataset
+```{r }
+data("iris")
+iris_df<- iris
+```
+
+### put color in dataset
+```{r }
+ifelse(iris_df$Species == "versicolor", "blue", 
+       ifelse(iris_df$Species == "setosa", "purple", "pink"))
+head(iris_df)
+```
+
+### sorting dataset by Sepal.Width
+```{r }
+sorted_sepal_width <- order(iris$Sepal.Width, decreasing = TRUE)  
+sorted_iris<- iris[sorted_sepal_width,]
+head(sorted_iris)
+```
+
+### virginica is the small one
+```{r }
+versicolor_mean <- mean(iris[iris$Species == "versicolor","Sepal.Width"])
+setosa_mean <- mean(iris[iris$Species == "setosa","Sepal.Width"])
+virginica_mean <- mean(iris[iris$Species == "virginica","Sepal.Width"])
+```
+### virginica dataframe without color column
+```{r }
+virginica_df<- iris[iris$Species == "virginica",1:5]
+head(virginica_df)
+```
