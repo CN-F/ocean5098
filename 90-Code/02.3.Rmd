@@ -9,17 +9,39 @@ output: html_document
 #knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ## Download rairuoho dataset
 Click the button below to download the dataset. It contains data on 8 days length of Easter grass exposed to different treatments. 
 ```{r echo = FALSE }
 xfun::embed_file("C:\\ocean5098\\03-Rairuoho\\rairuoho_data.txt")
 ```
 
+```{r eval=FALSE}
+library(dplyr)
+library(tidyr)
+```
+
 ## Read rairuoho dataset
 ```{r}
 rairuoho_path<- "C:\\ocean5098\\03-Rairuoho\\rairuoho_data.txt"
-rairuoho_data<- read.table(rairuoho_path)
-rairuoho_data
+rairuoho_data<- read.table(rairuoho_path, header = T)
+head(rairuoho_data,5)
 ```
 
+## Replace nutrient with enriched in the dataset
+```{r}
+rairuoho_data[rairuoho_data$treatment == "nutrient","treatment"]<- "enriched"
+head(rairuoho_data,5)
+```
+## Reformat dataset
+```{r}
+rairuoho_long <- pivot_longer(rairuoho_data, 
+                              cols = starts_with("day"), 
+                              names_to = "day",
+                              values_to = "length")
+```
+
+## delete two column called "row" and "column" in dataset
+```{r}
+rairuoho_data<- rairuoho_data[,-c(12,13)]
+head(rairuoho_data,5)
+```
