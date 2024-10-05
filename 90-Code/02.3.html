@@ -402,20 +402,31 @@ head(rairuoho_data,5)</code></pre>
 </div>
 <div id="reformat-dataset" class="section level2">
 <h2>Reformat dataset</h2>
-<pre class="r"><code>#rairuoho_long &lt;- pivot_longer(rairuoho, cols = starts_with(&quot;day&quot;), 
-#                              names_to = &quot;day&quot;, 
-#                              values_to = &quot;length&quot;)</code></pre>
+<pre class="r"><code>rairuoho_re &lt;- reshape(rairuoho_data,
+                         varying = list(names(rairuoho_data)[grepl(&quot;day&quot;, names(rairuoho_data))]),
+                         v.names = &quot;length&quot;,
+                         timevar = &quot;day&quot;,
+                         times = c(&quot;day3&quot;, &quot;day4&quot;, &quot;day5&quot;, &quot;day6&quot;, &quot;day7&quot;, &quot;day8&quot;),
+                         direction = &quot;long&quot;)
+rairuoho_re &lt;- rairuoho_re[ , !names(rairuoho_re) %in% c(&quot;id&quot;)]
+head(rairuoho_re,5)</code></pre>
+<pre><code>##        germinate    bed treatment spatial1 spatial2 row column  day length
+## 1.day3        18 paper4  enriched    upper     left   1      1 day3      2
+## 2.day3        19 mould1  enriched    upper     left   2      1 day3      5
+## 3.day3        18 paper8  enriched    upper     left   3      1 day3      5
+## 4.day3        17 mould2  enriched    upper     left   4      1 day3      7
+## 5.day3        12 paper4  enriched    lower     left   5      1 day3      0</code></pre>
 </div>
 <div id="delete-two-column-called-row-and-column-in-dataset" class="section level2">
 <h2>delete two column called “row” and “column” in dataset</h2>
-<pre class="r"><code>rairuoho_data&lt;- rairuoho_data[,-c(12,13)]
-head(rairuoho_data,5)</code></pre>
-<pre><code>##   day3 day4 day5 day6 day7 day8 germinate    bed treatment spatial1 spatial2
-## 1    2   13   34   85  112  121        18 paper4  enriched    upper     left
-## 2    5   22   60   95  108  116        19 mould1  enriched    upper     left
-## 3    5   26   34   73   96  111        18 paper8  enriched    upper     left
-## 4    7   24   61   91  101  117        17 mould2  enriched    upper     left
-## 5    0    9   31   61   92  116        12 paper4  enriched    lower     left</code></pre>
+<pre class="r"><code>rairuoho &lt;- rairuoho_re[ , !names(rairuoho_re) %in% c(&quot;row&quot;, &quot;column&quot;)]
+head(rairuoho,5)</code></pre>
+<pre><code>##        germinate    bed treatment spatial1 spatial2  day length
+## 1.day3        18 paper4  enriched    upper     left day3      2
+## 2.day3        19 mould1  enriched    upper     left day3      5
+## 3.day3        18 paper8  enriched    upper     left day3      5
+## 4.day3        17 mould2  enriched    upper     left day3      7
+## 5.day3        12 paper4  enriched    lower     left day3      0</code></pre>
 </div>
 
 

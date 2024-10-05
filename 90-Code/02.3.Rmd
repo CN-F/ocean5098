@@ -34,14 +34,18 @@ head(rairuoho_data,5)
 ```
 ## Reformat dataset
 ```{r}
-rairuoho_long <- pivot_longer(rairuoho_data, 
-                              cols = starts_with("day"), 
-                              names_to = "day",
-                              values_to = "length")
+rairuoho_re <- reshape(rairuoho_data,
+                         varying = list(names(rairuoho_data)[grepl("day", names(rairuoho_data))]),
+                         v.names = "length",
+                         timevar = "day",
+                         times = c("day3", "day4", "day5", "day6", "day7", "day8"),
+                         direction = "long")
+rairuoho_re <- rairuoho_re[ , !names(rairuoho_re) %in% c("id")]
+head(rairuoho_re,5)
 ```
 
 ## delete two column called "row" and "column" in dataset
 ```{r}
-rairuoho_data<- rairuoho_data[,-c(12,13)]
-head(rairuoho_data,5)
+rairuoho <- rairuoho_re[ , !names(rairuoho_re) %in% c("row", "column")]
+head(rairuoho,5)
 ```
