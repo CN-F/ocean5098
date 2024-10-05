@@ -5,13 +5,21 @@ date: "2024-10-05"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r eval = TRUE,  message=F, include=FALSE, warning=F, purl=F, results="hide"}
+#knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 
 
-```{r }
-rairuoho_data<- read.table("C:\\ocean5098\\03-Rairuoho\\rairuoho_data.txt")
+## Download rairuoho dataset
+Click the button below to download the dataset. It contains data on 8 days length of Easter grass exposed to different treatments. 
+```{r echo = FALSE }
+xfun::embed_file("C:\\ocean5098\\03-Rairuoho\\rairuoho_data.txt")
+```
+
+## Read rairuoho dataset
+```{r}
+rairuoho_path<- "C:\\ocean5098\\03-Rairuoho\\rairuoho_data.txt"
+rairuoho_data<- read.table(rairuoho_path)
+rairuoho_data
 ```
 
