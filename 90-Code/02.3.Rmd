@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 
 
-```{r cars}
-summary(cars)
+```{r }
+rairuoho_data<- read.table("C:\\ocean5098\\03-Rairuoho\\rairuoho_data.txt")
 ```
 
