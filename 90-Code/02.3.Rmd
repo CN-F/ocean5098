@@ -41,11 +41,38 @@ rairuoho_re <- reshape(rairuoho_data,
                          times = c("day3", "day4", "day5", "day6", "day7", "day8"),
                          direction = "long")
 rairuoho_re <- rairuoho_re[ , !names(rairuoho_re) %in% c("id")]
+rownames(rairuoho_re)<-NULL
 head(rairuoho_re,5)
 ```
 
-## delete two column called "row" and "column" in dataset
+## set factor
+let column "day" in dataset be a factor with 6 levels
 ```{r}
-rairuoho <- rairuoho_re[ , !names(rairuoho_re) %in% c("row", "column")]
+rairuoho_re$day <- factor(rairuoho_re$day, levels = c("day3", "day4", "day5", "day6", "day7", "day8"))
+head(rairuoho_re,5)
+str(rairuoho_re)
+```
+
+## merge spatial
+merge two spatial with "_" and replace two column called "spatial1" and "spatial1", and delete two column called "row" and "column" in dataset
+```{r}
+head(rairuoho_re$spatial1)    # spatial 1
+head(rairuoho_re$spatial2)    # spatial 2
+spatial<- paste(rairuoho_re$spatial1, rairuoho_re$spatial2, sep = "_")
+rairuoho_spat<- cbind(rairuoho_re,spatial)
+head(rairuoho_spat,5)
+```
+
+```{r}
+rairuoho <- rairuoho_spat[ , !names(rairuoho_spat) %in% c("spatial1", "spatial2", "row", "column")]
 head(rairuoho,5)
+```
+
+## save as csv file
+```{r}
+csv_path<- "C:\\ocean5098\\03-Rairuoho\\rairuoho.csv"
+write.csv(rairuoho, csv_path, row.names=F)
+```
+```{r echo = FALSE }
+xfun::embed_file(csv_path)
 ```
