@@ -357,62 +357,151 @@ display: none;
 </div>
 
 
-<div id="create-the-initial-data-frame" class="section level1">
-<h1>Create the initial data frame</h1>
-<pre><code>start_experiment &lt;-  c(4, 5, 3, 6, 7)
+<div id="the-first-element-of-the-my.experiment-list" class="section level1">
+<h1>the first element of the “my.experiment” list</h1>
+<p>The data frame contains the growth conditions of five
+individuals.</p>
+<pre class="r"><code>start_experiment &lt;-  c(4, 5, 3, 6, 7)
 end_experiment &lt;-  c(9, 6, 5, 4, 7)
 plant_data &lt;- data.frame(start_experiment, end_experiment)
 row.names(plant_data) &lt;-  c(&quot;plant 1&quot;, &quot;plant 2&quot;, &quot;plant 3&quot;, &quot;plant 4&quot;, &quot;plant 5&quot;)
 plant_data</code></pre>
+<pre><code>##         start_experiment end_experiment
+## plant 1                4              9
+## plant 2                5              6
+## plant 3                3              5
+## plant 4                6              4
+## plant 5                7              7</code></pre>
 </div>
-<div id="reshape-the-data-frame" class="section level1">
-<h1>Reshape the data frame</h1>
-<pre><code>library(tidyr)
-long_plant_data &lt;- gather(plant_data, key = &quot;time&quot;, value = &quot;height&quot;, start_experiment:end_experiment)
-long_plant_data$time &lt;- factor(long_plant_data$time, levels = c(&quot;start_experiment&quot;, &quot;end_experiment&quot;))
+<div id="reformat-the-data-frame-named-plant_data" class="section level1">
+<h1>Reformat the data frame named “plant_data”</h1>
+<pre class="r"><code>library(tidyr)
+long_plant_data &lt;- pivot_longer(plant_data,
+                                cols = c(start_experiment,
+                                         end_experiment),
+                                names_to = &quot;time&quot;,
+                                values_to = &quot;height&quot;)
 long_plant_data</code></pre>
+<pre><code>## # A tibble: 10 × 2
+##    time             height
+##    &lt;chr&gt;             &lt;dbl&gt;
+##  1 start_experiment      4
+##  2 end_experiment        9
+##  3 start_experiment      5
+##  4 end_experiment        6
+##  5 start_experiment      3
+##  6 end_experiment        5
+##  7 start_experiment      6
+##  8 end_experiment        4
+##  9 start_experiment      7
+## 10 end_experiment        7</code></pre>
+<pre class="r"><code>str(long_plant_data)</code></pre>
+<pre><code>## tibble [10 × 2] (S3: tbl_df/tbl/data.frame)
+##  $ time  : chr [1:10] &quot;start_experiment&quot; &quot;end_experiment&quot; &quot;start_experiment&quot; &quot;end_experiment&quot; ...
+##  $ height: num [1:10] 4 9 5 6 3 5 6 4 7 7</code></pre>
+<pre class="r"><code>long_plant_data$time &lt;- factor(long_plant_data$time, levels = c(&quot;start_experiment&quot;, &quot;end_experiment&quot;))
+long_plant_data$time</code></pre>
+<pre><code>##  [1] start_experiment end_experiment   start_experiment end_experiment  
+##  [5] start_experiment end_experiment   start_experiment end_experiment  
+##  [9] start_experiment end_experiment  
+## Levels: start_experiment end_experiment</code></pre>
+<pre class="r"><code>str(long_plant_data$time)</code></pre>
+<pre><code>##  Factor w/ 2 levels &quot;start_experiment&quot;,..: 1 2 1 2 1 2 1 2 1 2</code></pre>
 </div>
-<div id="create-the-list-my.experiment-with-the-reshaped-data-frame-as-the-first-element" class="section level1">
-<h1>Create the list my.experiment with the reshaped data frame as the
-first element</h1>
-<pre><code>my.experiment &lt;- list()</code></pre>
+<div id="the-second-element-of-my.experiment-list" class="section level1">
+<h1>the second element of my.experiment list</h1>
+<div id="the-first-element-of-growth-list" class="section level3">
+<h3>the first element of growth list</h3>
+<p>Extract 5 row names from “plant_data”.</p>
+<pre class="r"><code>row_names &lt;- rownames(plant_data)</code></pre>
 </div>
-<div id="add-the-data-frame-to-my.experiment" class="section level1">
-<h1>Add the data frame to my.experiment</h1>
-<pre><code>my.experiment[[1]] &lt;- long_plant_data</code></pre>
+<div id="the-second-element-of-growth-list" class="section level3">
+<h3>the second element of growth list</h3>
+<p>Numeric vector of percentage growth.</p>
+<pre class="r"><code>initial_heights &lt;- plant_data$start_experiment
+initial_heights</code></pre>
+<pre><code>## [1] 4 5 3 6 7</code></pre>
+<pre class="r"><code>final_heights &lt;- plant_data$end_experiment
+final_heights</code></pre>
+<pre><code>## [1] 9 6 5 4 7</code></pre>
+<pre class="r"><code>percentage_growth &lt;- ((final_heights - initial_heights) / initial_heights) * 100
+percentage_growth</code></pre>
+<pre><code>## [1] 125.00000  20.00000  66.66667 -33.33333   0.00000</code></pre>
 </div>
-<div id="create-the-growth-list" class="section level1">
-<h1>Create the growth list</h1>
-<div id="character-vector-of-row-names" class="section level3">
-<h3>Character vector of row names</h3>
-<pre><code>row_names &lt;- rownames(plant_data)</code></pre>
+<div id="the-third-element-of-growth-list" class="section level3">
+<h3>the third element of growth list</h3>
+<p>Data frame containing plants and their growth</p>
+<pre class="r"><code>growth_table &lt;- data.frame(plants = row_names,
+                           growth = percentage_growth)
+growth_table</code></pre>
+<pre><code>##    plants    growth
+## 1 plant 1 125.00000
+## 2 plant 2  20.00000
+## 3 plant 3  66.66667
+## 4 plant 4 -33.33333
+## 5 plant 5   0.00000</code></pre>
 </div>
-<div id="numeric-vector-of-percentage-growth" class="section level3">
-<h3>Numeric vector of percentage growth</h3>
-<pre><code>initial_heights &lt;- plant_data$start_experiment
-final_heights &lt;- plant_data$end_experiment
-percentage_growth &lt;- ((final_heights - initial_heights) / initial_heights) * 100</code></pre>
+<div id="create-the-growth-list." class="section level3">
+<h3>Create the growth list.</h3>
+<pre class="r"><code>growth_list &lt;- list(row_names, percentage_growth, growth_table)
+growth_list</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;plant 1&quot; &quot;plant 2&quot; &quot;plant 3&quot; &quot;plant 4&quot; &quot;plant 5&quot;
+## 
+## [[2]]
+## [1] 125.00000  20.00000  66.66667 -33.33333   0.00000
+## 
+## [[3]]
+##    plants    growth
+## 1 plant 1 125.00000
+## 2 plant 2  20.00000
+## 3 plant 3  66.66667
+## 4 plant 4 -33.33333
+## 5 plant 5   0.00000</code></pre>
 </div>
-<div id="data-frame-with-plants-and-their-growth" class="section level3">
-<h3>Data frame with plants and their growth</h3>
-<pre><code>growth_table &lt;- data.frame(
-  plants = row_names,
-  growth = percentage_growth
-)</code></pre>
 </div>
-<div id="add-the-growth-list-as-the-second-element-of-my.experiment" class="section level3">
-<h3>Add the growth list as the second element of my.experiment</h3>
-<pre><code>growth_list &lt;- list(row_names, percentage_growth, growth_table)
-my.experiment[[2]] &lt;- growth_list</code></pre>
-</div>
-</div>
-<div id="add-a-message-as-the-third-element" class="section level1">
-<h1>Add a message as the third element</h1>
-<pre><code>my.experiment[[3]] &lt;- &quot;The growth of the plants varies; some increased, while others decreased.&quot;</code></pre>
-<div id="print-the-my.experiment-list-to-verify" class="section level3">
-<h3>Print the my.experiment list to verify</h3>
-<pre><code>print(my.experiment)</code></pre>
-</div>
+<div id="my.experiment-list" class="section level1">
+<h1>my.experiment list</h1>
+<p>Combine the three elements—long_plant_data, growth_list, and a
+message about the growth status—into a single list titled
+my.experiment.</p>
+<pre class="r"><code>my.experiment &lt;- list(long_plant_data, 
+                      growth_list, 
+                      &quot;The growth of the plants varies; some increased, while others decreased.&quot;)
+my.experiment</code></pre>
+<pre><code>## [[1]]
+## # A tibble: 10 × 2
+##    time             height
+##    &lt;fct&gt;             &lt;dbl&gt;
+##  1 start_experiment      4
+##  2 end_experiment        9
+##  3 start_experiment      5
+##  4 end_experiment        6
+##  5 start_experiment      3
+##  6 end_experiment        5
+##  7 start_experiment      6
+##  8 end_experiment        4
+##  9 start_experiment      7
+## 10 end_experiment        7
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] &quot;plant 1&quot; &quot;plant 2&quot; &quot;plant 3&quot; &quot;plant 4&quot; &quot;plant 5&quot;
+## 
+## [[2]][[2]]
+## [1] 125.00000  20.00000  66.66667 -33.33333   0.00000
+## 
+## [[2]][[3]]
+##    plants    growth
+## 1 plant 1 125.00000
+## 2 plant 2  20.00000
+## 3 plant 3  66.66667
+## 4 plant 4 -33.33333
+## 5 plant 5   0.00000
+## 
+## 
+## [[3]]
+## [1] &quot;The growth of the plants varies; some increased, while others decreased.&quot;</code></pre>
 </div>
 
 

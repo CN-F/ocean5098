@@ -4,63 +4,69 @@ author: "R13B42015"
 date: "2024-10-13"
 output: html_document
 ---
-```{r eval = TRUE,  message=F, include=FALSE, warning=F, purl=F, results="hide"}
+
+```{r ,eval = TRUE,  message=F, include=FALSE, warning=F, purl=F, results="hide"}
 #knitr::opts_chunk$set(echo = TRUE)
 ```
-# Create the initial data frame
-```{}
+# the first element of the "my.experiment" list
+The data frame contains the growth conditions of five individuals.
+```{r}
 start_experiment <-  c(4, 5, 3, 6, 7)
 end_experiment <-  c(9, 6, 5, 4, 7)
 plant_data <- data.frame(start_experiment, end_experiment)
 row.names(plant_data) <-  c("plant 1", "plant 2", "plant 3", "plant 4", "plant 5")
 plant_data
 ```
-# Reshape the data frame
-```{}
+
+# Reformat the data frame named "plant_data"
+```{r}
 library(tidyr)
-long_plant_data <- gather(plant_data, key = "time", value = "height", start_experiment:end_experiment)
-long_plant_data$time <- factor(long_plant_data$time, levels = c("start_experiment", "end_experiment"))
+long_plant_data <- pivot_longer(plant_data,
+                                cols = c(start_experiment,
+                                         end_experiment),
+                                names_to = "time",
+                                values_to = "height")
 long_plant_data
+str(long_plant_data)
+long_plant_data$time <- factor(long_plant_data$time, levels = c("start_experiment", "end_experiment"))
+long_plant_data$time
+str(long_plant_data$time)
 ```
 
-
-# Create the list my.experiment with the reshaped data frame as the first element
-```{}
-my.experiment <- list()
-```
-
-# Add the data frame to my.experiment
-```{}
-my.experiment[[1]] <- long_plant_data
-```
-# Create the growth list
-### Character vector of row names
-```{}
+# the second element of my.experiment list
+### the first element of growth list
+Extract 5 row names from "plant_data".
+```{r}
 row_names <- rownames(plant_data)
 ```
-### Numeric vector of percentage growth
-```{}
+### the second element of growth list
+Numeric vector of percentage growth.
+```{r}
 initial_heights <- plant_data$start_experiment
+initial_heights
 final_heights <- plant_data$end_experiment
+final_heights
 percentage_growth <- ((final_heights - initial_heights) / initial_heights) * 100
+percentage_growth
 ```
-### Data frame with plants and their growth
-```{}
-growth_table <- data.frame(
-  plants = row_names,
-  growth = percentage_growth
-)
+### the third element of growth list
+Data frame containing plants and their growth
+```{r}
+growth_table <- data.frame(plants = row_names,
+                           growth = percentage_growth)
+growth_table
 ```
-### Add the growth list as the second element of my.experiment
-```{}
+### Create the growth list.
+```{r}
 growth_list <- list(row_names, percentage_growth, growth_table)
-my.experiment[[2]] <- growth_list
+growth_list
 ```
-# Add a message as the third element
-```{}
-my.experiment[[3]] <- "The growth of the plants varies; some increased, while others decreased."
-```
-### Print the my.experiment list to verify
-```{}
-print(my.experiment)
+
+# my.experiment list
+Combine the three elements—long_plant_data, growth_list, and a message about the growth status—into a single list titled my.experiment.
+```{r}
+my.experiment <- list(long_plant_data, 
+                      growth_list, 
+                      "The growth of the plants varies; some increased, while others decreased.")
+my.experiment
 ```
