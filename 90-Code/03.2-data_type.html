@@ -358,7 +358,7 @@ display: none;
 
 
 <div id="the-first-element-of-the-my.experiment-list" class="section level1">
-<h1>the first element of the “my.experiment” list</h1>
+<h1>the first element of the ‘my.experiment’ list</h1>
 <p>The data frame contains the growth conditions of five
 individuals.</p>
 <pre class="r"><code>start_experiment &lt;-  c(4, 5, 3, 6, 7)
@@ -374,7 +374,7 @@ plant_data</code></pre>
 ## plant 5                7              7</code></pre>
 </div>
 <div id="reformat-the-data-frame-named-plant_data" class="section level1">
-<h1>Reformat the data frame named “plant_data”</h1>
+<h1>Reformat the data frame named ‘plant_data’</h1>
 <pre class="r"><code>library(tidyr)
 long_plant_data &lt;- pivot_longer(plant_data,
                                 cols = c(start_experiment,
@@ -409,10 +409,10 @@ long_plant_data$time</code></pre>
 <pre><code>##  Factor w/ 2 levels &quot;start_experiment&quot;,..: 1 2 1 2 1 2 1 2 1 2</code></pre>
 </div>
 <div id="the-second-element-of-my.experiment-list" class="section level1">
-<h1>the second element of my.experiment list</h1>
+<h1>the second element of ‘my.experiment’ list</h1>
 <div id="the-first-element-of-growth-list" class="section level3">
 <h3>the first element of growth list</h3>
-<p>Extract 5 row names from “plant_data”.</p>
+<p>Extract 5 row names from ‘plant_data’.</p>
 <pre class="r"><code>row_names &lt;- rownames(plant_data)</code></pre>
 </div>
 <div id="the-second-element-of-growth-list" class="section level3">
