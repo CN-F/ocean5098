@@ -15,7 +15,11 @@ Click the button below to download the dataset. It contains data on 8 days lengt
 xfun::embed_file("C:\\ocean5098\\03-Rairuoho\\rairuoho_data.txt")
 ```
 
-```{r eval=FALSE}
+```{r, message=FALSE, warning=FALSE}
+
+```
+
+```{r ,eval=FALSE}
 library(dplyr)
 library(tidyr)
 ```
