@@ -1,6 +1,7 @@
 ###########################
 ### plot practice
 ###########################
+library(Biobase)
 rm(list=ls())
 ###########################
 ###
@@ -13,14 +14,26 @@ if (dir.exists(plot_dir) == FALSE)
 
 ###########################
 ###
-iris
-pairs (iris[1:4])
-###########################
-###
-pdf_path<- paste0(plot_dir, "iris_scatterplot_matrix.pdf")
-pdf(pdf_path)
-pairs(iris[1:4], main = "Iris Scatterplot Matrix")
-dev.off()
+x<- iris$Petal.Length
+y<- iris$Petal.Width
 
 ###########################
-###
+### pdf
+pdf_path<- paste0(plot_dir, "\\basic_plot.pdf")
+pdf(pdf_path)
+
+plot(x,y,
+     col = c("black", "red", "green")[iris$Species], 
+     pch = c(1, 2, 3)[iris$Species],
+     xlab = "Petal length (cm)", 
+     ylab = "Petal width (cm)",
+     main = "Petal width vs. length")
+
+abline(lm(iris$Petal.Width ~ iris$Petal.Length), col = "black")
+text(5, 0.5, "R= 0.96")
+legend("topleft", legend = levels(iris$Species),
+       col = c("black", "red", "green"), 
+       pch = c(1, 2, 3))
+
+dev.off()
+openPDF(pdf_path)
