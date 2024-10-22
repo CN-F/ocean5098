@@ -30,7 +30,11 @@ plot(x,y,
      main = "Petal width vs. length")
 
 abline(lm(iris$Petal.Width ~ iris$Petal.Length), col = "black")
-text(5, 0.5, "R= 0.96")
+
+r2_value<- summary(model)$r.squared
+text_word<- round(sqrt(r2_value),2)
+text(5, 0.5, paste0("R= ", text_word))
+
 legend("topleft", legend = levels(iris$Species),
        col = c("black", "red", "green"), 
        pch = c(1, 2, 3))
