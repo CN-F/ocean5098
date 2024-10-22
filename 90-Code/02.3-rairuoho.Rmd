@@ -74,7 +74,7 @@ head(rairuoho,5)
 
 ## save as csv file
 ```{r}
-csv_path<- "C:\\ocean5098\\03-Rairuoho\\rairuoho.csv"
+csv_path<- "C:\\ocean5098\\02.3-Rairuoho\\rairuoho.csv"
 write.csv(rairuoho, csv_path, row.names=F)
 ```
 ```{r echo = FALSE }
