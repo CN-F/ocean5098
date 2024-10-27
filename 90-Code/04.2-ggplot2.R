@@ -20,6 +20,18 @@ pdf_path<- paste0(plot_dir, "\\ggplot.pdf")
 pdf_path
 pdf(pdf_path, width = 5, height = 4) #Increased size
 
+#########################
+### Grass Growth Over Time with Error Bars
+summarized_data <- rairuoho_data %>%
+  group_by(day, treatment) %>%
+  summarize(mean_length = mean(length), sd_length = sd(length))
+
+ggplot(summarized_data, aes(x = day, y = mean_length, color = treatment, group = treatment)) +
+  scale_color_manual(values = c("#45e0ab", "#ffbc00")) + 
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean_length - sd_length, ymax = mean_length + sd_length), width = 0.2) +
+  labs(title = "Grass Growth Over Time with Error Bars", x = "Day", y = "Mean Length")
 
 #########################
 ### Average Grass Growth Under Different Treatments
@@ -107,3 +119,6 @@ ggplot(summarized_data, aes(x = treatment, y = TotalGrowth, fill = treatment)) +
 
 dev.off()
 openPDF(pdf_path)
+
+
+
