@@ -1,0 +1,13 @@
+---
+title: "map practice"
+author: "R13B42015"
+date: "2024-11-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Introduction: 
+**`r knitr::asis_output("\U26A0")` Practice 5.1** Using the `rgbif` package download data from any species you like. Make a nice map of the distribution of the selected species. Of course you will fix projection problem when plotting you map. You map can be static or interactive.
