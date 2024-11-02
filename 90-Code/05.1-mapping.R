@@ -24,9 +24,20 @@ species_data <- occ_search(scientificName = "Isoetes taiwanensis",
 head(species_data$data)
 
 # Create an interactive map
-leaflet(cleaned_data) %>%
-  addTiles() %>%
-  addCircles(lng = ~decimalLongitude, lat = ~decimalLatitude, 
-             radius = 50, 
-             popup = ~paste(scientificName))
-
+leaflet(species_data$data) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(
+    lng = ~decimalLongitude, 
+    lat = ~decimalLatitude, 
+    radius = 100,            # 增加圓圈半徑
+    color = "blue",          # 圓圈顏色
+    fillOpacity = 0.5,       # 填充透明度
+    stroke = TRUE,           # 啟用邊框
+    weight = 1,              # 邊框粗細
+    popup = ~paste(scientificName)  # 設置彈出內容
+  ) %>%
+  addScaleBar(position = "bottomright") %>%
+  addMeasure() %>%
+  # 使用 HTML 代碼直接設置控制標題
+  addControl("<strong>Species Distribution Map</strong>", position = "topright", 
+             className = "leaflet-control-custom")

@@ -53,11 +53,33 @@ head(species_data$data)
 ```
 
 ```{r}
-# Create an interactive map by leaflet function
+# Chinese interactive map
 leaflet(species_data$data) %>%
   addTiles() %>%
   addCircles(lng = ~decimalLongitude, lat = ~decimalLatitude, 
              radius = 50, 
-             popup = ~paste(scientificName))
+             popup = ~paste(scientificName)) %>%
+  addScaleBar(position = "bottomright") %>%
+  addMeasure() %>%
+  addControl("<strong>Isoetes taiwanensis Distribution Map</strong>", position = "topright", 
+             className = "leaflet-control-custom")
+```
+
+```{r}
+# English interactive map
+leaflet(species_data$data) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(
+    lng = ~decimalLongitude, 
+    lat = ~decimalLatitude, 
+    radius = 50,
+    fillOpacity = 5,
+    stroke = TRUE,
+    popup = ~paste(scientificName),
+  ) %>%
+  addScaleBar(position = "bottomright") %>%
+  addMeasure() %>%
+  addControl("<strong>Isoetes taiwanensis Distribution Map</strong>", position = "topright", 
+             className = "leaflet-control-custom")
 ```
 
