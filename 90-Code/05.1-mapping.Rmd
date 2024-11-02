@@ -1,13 +1,63 @@
 ---
-title: "map practice"
+title: "practice 5.1 mapping"
 author: "R13B42015"
 date: "2024-11-02"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r ,eval = TRUE,  message=F, include=FALSE, warning=F, purl=F, results="hide"}
+#knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Introduction: 
-**`r knitr::asis_output("\U26A0")` Practice 5.1** Using the `rgbif` package download data from any species you like. Make a nice map of the distribution of the selected species. Of course you will fix projection problem when plotting you map. You map can be static or interactive.
+<p class="alert">
+**`r knitr::asis_output("\U26A0")` Practice 5.1** Using the `rgbif` package download data from any species. Make a nice map of the distribution of the selected species. fix projection problem when plotting map. The map can be static or interactive.
+</p>
+
+## Introduce: Lycophytes
+Lycophytes are a group of vascular plants, including clubmosses, often classified in the division Lycopodiophyta or Lycophyta. They represent one of the oldest lineages of living vascular plants, with some extinct species dating back to the Silurian period (about 425 million years ago). During the Carboniferous period, lycophytes dominated and included tree-like forms such as Lepidodendrales, some over 40 meters tall, although extant lycophytes are relatively small.
+
+<img src="C://ocean5098//05-mapping_practice//Simple_evolution_tree.png" alt="Description of the image" width="400" height="300" />
+(Simpson, M. G. (2006). Plant Systematics.)
+
+## Taiwan Isoetes
+Taiwan Isoetes (Scientific name: Isoetes taiwanensis), also known as water grass (Tsuí-kú-tshài), is the only species of the Isoetes genus found in Taiwan, primarily distributed in Dream Lake of Qixing Mountain in Yangmingshan National Park. This perennial aquatic herbaceous plant has been present for about 5,000 years and is a rare endemic species. Taiwan Isoetes originated approximately 250 million years ago during the Triassic period and is considered a living fossil. Most of its close relatives became extinct during the Cretaceous, leaving only this low-growing form of Isoetes, which is significant in evolutionary studies. This plant produces spores but does not form seeds, pollen, or fruits, and has two varieties: Taiwan Isoetes (Isoetes taiwanensis var. taiwanensis) and Kinmen Isoetes (Isoetes taiwanensis var. kinmenensis).
+
+<img src="https://www.natgeomedia.com/wp-content/uploads/2016/05/%E8%87%BA%E7%81%A3%E6%B0%B4%E9%9F%AD%E5%B7%A6_c-1024x576.jpg" alt="Description of the image" width="350" height="210" />
+<img src="https://www.natgeomedia.com/wp-content/uploads/2016/05/%E8%87%BA%E7%81%A3%E6%B0%B4%E9%9F%AD%E5%8F%B3_c-1024x768.jpg" alt="Description of the image" width="350" height="210" />
+
+The above two images show Taiwan Isoetes both submerged in water and exposed to the air. The sources of both images are National Geographic (https://www.natgeomedia.com/environment/article/content-6150.html).
+
+```{r ,message=F}
+library(rgbif) # for download dataset
+library(dplyr)
+library(leaflet) # for mapping
+```
+
+```{r ,include=FALSE}
+# dir create
+map_dir<- "C://ocean5098//05-mapping_practice"
+if (dir.exists(map_dir) == FALSE)
+{
+  dir.create(map_dir)
+}
+```
+
+```{r}
+# Get data for Common House Sparrow
+species_data <- occ_search(scientificName = "Isoetes taiwanensis",
+                           hasCoordinate=T,
+                           basisOfRecord='HUMAN_OBSERVATION',
+                           limit = 1000) 
+head(species_data$data)
+```
+
+```{r}
+# Create an interactive map by leaflet function
+leaflet(species_data$data) %>%
+  addTiles() %>%
+  addCircles(lng = ~decimalLongitude, lat = ~decimalLatitude, 
+             radius = 50, 
+             popup = ~paste(scientificName))
+```
+
