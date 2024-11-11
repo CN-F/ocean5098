@@ -33,7 +33,6 @@ grow <- function(start_1, start_2) {
     N1[i] <- N1[i-1] + (growth.rate * N1[i-1] * (K1 - N1[i-1] - (a12 * N2[i-1])) / K1)
     N2[i] <- N2[i-1] + (growth.rate * N2[i-1] * (K2 - N2[i-1] - (a21 * N1[i-1])) / K2)
   }
-  
   # plot
   plot(generation, N1, type = "b", ylim = c(0, max(K1, K2)), ylab = "Population Size", xlab = "Generations", main = "Population Dynamics")
   lines(generation, N2, col = 2)  # Add species 2's curve
