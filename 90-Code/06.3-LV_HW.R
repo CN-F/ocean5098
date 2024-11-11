@@ -1,7 +1,6 @@
 ############################################
 ###
 ############################################
-# install.packages("Cairo")
 library(ggplot2)
 library(gganimate)
 library(reshape2)
@@ -82,9 +81,9 @@ data_alone2 <- grow(0, 10)
 data_competing <- grow(10, 10)
 
 # Combine data into one data frame
-data_alone1$Scenario <- "Species 1 Alone"
-data_alone2$Scenario <- "Species 2 Alone"
-data_competing$Scenario <- "Both Species Competing"
+data_alone1$Scenario <- "S1" # Species 1 Alone
+data_alone2$Scenario <- "S2" # Species 2 Alone
+data_competing$Scenario <- "Both" # Both Species Competing
 
 # Combine all scenarios into one data frame
 combined_data <- rbind(data_alone1, data_alone2, data_competing)
