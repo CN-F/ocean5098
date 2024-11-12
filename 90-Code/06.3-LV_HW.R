@@ -109,11 +109,8 @@ p <- ggplot(data_long, aes(x = Generation, y = Population, color = Species)) +
 # you object p is already a gif
 # to save it in your wd, simply use
 # anim_save("my animation.gif", p)
-
-anim_save(paste0(gif_dir,"//" ,"my animation.gif"), p)
-
-# anim <- animate(p, nframes = 30, fps = 10, width = 800, height = 600)
-# anim_save(file.path(gif_dir,"population_dynamics_animation.gif"), animation = anim)
+gif_path<- paste0(gif_dir,"//" ,"my animation.gif")
+anim_save(gif_path, p)
 
 # in your Rmarkdown you may have a problem displaying p
 # you can use: 
