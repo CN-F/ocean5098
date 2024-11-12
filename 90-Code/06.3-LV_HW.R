@@ -38,7 +38,7 @@ grow <- function(start_1, start_2) {
   lines(generation, N2, col = 2)  # Add species 2's curve
   legend("topright", legend = c("Species 1", "Species 2"), col = c("black", "red"), lty = 1)
 }
-dev.new(width = 10, height = 7)
+# dev.new(width = 10, height = 7) # there is no need here
 par(mar=c(5,4,1,1),mfrow=c(5,1),las=1)
 grow(1,0)
 text(4,110,"Species 1 alone")
@@ -94,16 +94,31 @@ data_long <- melt(combined_data, id.vars = c("Generation", "Scenario"),
 
 # Create the animation
 p <- ggplot(data_long, aes(x = Generation, y = Population, color = Species)) +
-  geom_line(size = 1.2) +
+  geom_point(size = 1.2) + # not sure what you are looking for your animation but points make more sense in my opinion 
   labs(title = 'Population Dynamics: {frame_time}', 
        x = 'Generations', 
        y = 'Population Size') +
   transition_time(Generation) +
+  shadow_wake(wake_length =0.8, alpha = FALSE) +
   ease_aes('linear') +
   facet_wrap(~ Scenario) +  # Create separate plots for each scenario
   theme_minimal() + 
   scale_color_manual(values = c("blue", "red"), labels = c("Species 1", "Species 2"))
 
 # Save the animation as a GIF
-anim <- animate(p, nframes = 30, fps = 10, width = 800, height = 600)
-anim_save(file.path(gif_dir,"population_dynamics_animation.gif"), animation = anim)
+# you object p is already a gif
+# to save it in your wd, simply use
+# anim_save("my animation.gif", p)
+
+anim_save("my animation.gif", p)
+
+# anim <- animate(p, nframes = 30, fps = 10, width = 800, height = 600)
+# anim_save(file.path(gif_dir,"population_dynamics_animation.gif"), animation = anim)
+
+# in your Rmarkdown you may have a problem displaying p
+# you can use: 
+
+# ```{r, echo=FALSE, fig.align='center', fig.cap="Iris species data collection", out.width = '100%'}
+# knitr::include_graphics("my animation.gif")
+# ```
+
