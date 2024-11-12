@@ -17,7 +17,7 @@ if (dir.exists(gif_dir) == FALSE)
 ### Define the growth function
 grow <- function(start_1, start_2) {
   num_gen <- 30  # Number of generations
-  N1 <- numeric(num_gen)  # Initialize N1
+  N1 <- numeric(num_gen)  # Initialize N1 or use rep(0,num_gen)
   N2 <- numeric(num_gen)  # Initialize N2
   generation <- 1:num_gen  # Generation labels
   growth.rate <- 1.2  # Growth rate
@@ -39,7 +39,7 @@ grow <- function(start_1, start_2) {
   legend("topright", legend = c("Species 1", "Species 2"), col = c("black", "red"), lty = 1)
 }
 #dev.new(width = 10, height = 7) # there is no need here
-par(mar=c(5,4,1,1),mfrow=c(5,1),las=1)
+par(mar=c(5,4,1,1),mfrow=c(3,1),las=1)
 grow(1,0)
 text(4,110,"Species 1 alone")
 grow(0,1)
