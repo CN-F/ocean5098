@@ -38,7 +38,7 @@ grow <- function(start_1, start_2) {
   lines(generation, N2, col = 2)  # Add species 2's curve
   legend("topright", legend = c("Species 1", "Species 2"), col = c("black", "red"), lty = 1)
 }
-# dev.new(width = 10, height = 7) # there is no need here
+#dev.new(width = 10, height = 7) # there is no need here
 par(mar=c(5,4,1,1),mfrow=c(5,1),las=1)
 grow(1,0)
 text(4,110,"Species 1 alone")
@@ -110,7 +110,7 @@ p <- ggplot(data_long, aes(x = Generation, y = Population, color = Species)) +
 # to save it in your wd, simply use
 # anim_save("my animation.gif", p)
 
-anim_save("my animation.gif", p)
+anim_save(paste0(gif_dir,"//" ,"my animation.gif"), p)
 
 # anim <- animate(p, nframes = 30, fps = 10, width = 800, height = 600)
 # anim_save(file.path(gif_dir,"population_dynamics_animation.gif"), animation = anim)
