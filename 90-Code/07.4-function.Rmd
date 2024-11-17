@@ -1,0 +1,116 @@
+---
+title: "Practice 7.4 - LV"
+author: "R13B42015"
+date: "2024-11-17"
+output: html_document
+---
+
+```{r ,eval = TRUE,  message=F, include=FALSE, warning=F, purl=F, results="hide"}
+#knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r ,message=F}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+# Define the correlation function
+```{r}
+cor_func<- function(dataset, day_start, day_end, treatment)
+{
+  #############################
+  # set vector of test data
+  treatment_start<- dataset[dataset$treatment == treatment, day_start]
+  treatment_end<- dataset[dataset$treatment == treatment, day_end]
+  
+  #############################
+  # correlation (r value)
+  r<- cor(treatment_start, treatment_end)
+  #############################
+  # t value
+  n <- length(treatment_start)  # 假設樣本數
+  t_value <- r * sqrt(n - 2) / sqrt(1 - r^2)
+  #############################
+  # p value
+  degree_of_freedom<- n - 2
+  p_value <- 2 * (1 - pt(abs(t_value), df = degree_of_freedom))
+  print(p_value)
+  
+  cat("data: gress length of ", day_start," and ",day_end, "\n",
+      "treatment: ", treatment, "\n",
+      "t = ", t_value, "\n",
+      "p value = ", p_value, "\n",
+      "correlation: ", r)
+  
+  return(data.frame(day_start = day_start, day_end = day_end, 
+                    treatment = treatment, correlation = r, 
+                    t = t_value, p_value = p_value))
+}
+```
+
+# read dataset
+```{r}
+rairuoho <- read.table("C:\\ocean5098\\02.3-Rairuoho\\rairuoho_data.txt", header = TRUE)
+head(rairuoho,5)
+```
+
+# Create Boxplots for Grass Length Comparison
+```{r}
+rairuoho_long <- pivot_longer(rairuoho, cols = c(day3, day4), names_to = "day", values_to = "length")
+ggplot(rairuoho_long, aes(x = day, y = length, fill = treatment)) +
+  geom_boxplot() +
+  labs(title = "Comparison of grass length on day 3 and day 8 between different treatments",
+       x = "day",
+       y = "length")
+
+rairuoho_long <- pivot_longer(rairuoho, cols = c(day3, day8), names_to = "day", values_to = "length")
+ggplot(rairuoho_long, aes(x = day, y = length, fill = treatment)) +
+  geom_boxplot() +
+  labs(title = "Comparison of grass length on day 3 and day 8 between different treatments",
+       x = "day",
+       y = "length")
+```
+
+# Perform Correlation Tests
+```{r}
+treatments <- c("water", "nutrient")
+day_pairs <- list(c("day3", "day4"), c("day3", "day8"))
+results <- data.frame()
+for(treatment in treatments)
+{
+  for(day_pair in day_pairs)
+  {
+    result<- cor_func(rairuoho, day_pair[1], day_pair[2], treatment)
+    results <- rbind(results, result)
+  }
+}
+results
+```
+
+# Results:
+1. Water Treatment<br>
+  **Correlation between Day 3 and Day 4**<br>
+    Correlation coefficient ( r = 0.7865 ): This indicates a strong positive correlation between the lengths on Day 3 and Day 4.
+    p value = 5.197822e-06,  this value is less than 0.01, showing that this correlation is statistically very significant.<br>
+  **Correlation between Day 3 and Day 8**<br>
+    Correlation coefficient ( r = 0.4596 ): This shows a moderate positive correlation between lengths on Day 3 and Day 8.
+    p value = 2.386844e-02, this value is less than 0.05, indicating that this correlation is also significant, but the significance is weaker compared to the first pair of comparisons.
+
+2. Nutrient Treatment<br>
+  **Correlation between Day 3 and Day 4**<br>
+    Correlation coefficient ( r = 0.7744 ): This shows a strong positive correlation, similar to the water treatment group.
+    p value = 8.938370e-06, this value also shows high significance.<br>
+  **Correlation between Day 3 and Day 8**<br>
+    	Correlation coefficient ( r = 0.2417 ): This value indicates a weak positive correlation.p value = 2.552119e-01, this value is greater than 0.05, suggesting that this correlation is not statistically significant.
+
+
+# Conclusion
+From the above analysis, we observe that:<br>
+<div style="border: 2px solid #0073e6; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
+•	The Water Treatment shows a strong and significant correlation between Day 3 and Day 4, while a moderate and significant correlation exists between Day 3 and Day 8.<br>
+•	The Nutrient Treatment also demonstrates a strong and significant correlation between Day 3 and Day 4, but the correlation between Day 3 and Day 8 lacks significance.<br>
+</div>
+
+
+These results may imply that treatments using water and nutrients have a noticeable impact on the early growth (i.e., the relationship between lengths on Day 3 and Day 4), while the growth length on Day 8 seems less affected by the length on Day 3.
