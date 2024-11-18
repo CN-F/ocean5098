@@ -113,4 +113,6 @@ From the above analysis, we observe that:<br>
 </div>
 
 
-These results may imply that treatments using water and nutrients have a noticeable impact on the early growth (i.e., the relationship between lengths on Day 3 and Day 4), while the growth length on Day 8 seems less affected by the length on Day 3.
+These results may imply that treatments using water and nutrients have a noticeable impact on the early growth (i.e., the relationship between lengths on Day 3 and Day 4), while the growth length on Day 8 seems less affected by the length on Day 3. 
+
+VD: well, that's simply because once the plants grow too big, there are many variations among individuals. So, the correlation becomes weaker as plants ae growing and until no significant.
